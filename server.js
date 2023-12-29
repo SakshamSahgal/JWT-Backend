@@ -4,6 +4,8 @@ require('dotenv').config();
 const port = process.env.PORT || 8080;
 const cors = require('cors');
 const path = require('path');
+const {hasAccess} = require("./Auth/Middlewares")
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,3 +17,13 @@ app.listen(port, () => {
 
 
 require("./Auth/jwt")(app);
+
+
+
+
+app.get("/protectedAPI",hasAccess,(req,res) => {
+    res.json({
+        success: true,
+        message: "This is a protected API"
+    })
+})
